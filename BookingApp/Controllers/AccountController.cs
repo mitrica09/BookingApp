@@ -55,6 +55,7 @@ namespace BookingApp.Controllers
                 {
                     FullName = model.FullName,
                     Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
                     UserName = model.Email,
                 };
 
