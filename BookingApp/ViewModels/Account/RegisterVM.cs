@@ -10,6 +10,9 @@ namespace BookingApp.ViewModels.Account
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        [RegularExpression(@"^(\+40|0)\d{9}$", ErrorMessage = "Număr de telefon invalid, format acceptat +40... sau 0...")]
+        public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(40, MinimumLength = 8, ErrorMessage = "The {0} must be at {2} and at max {1} characters long.")]
