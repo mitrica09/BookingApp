@@ -1,5 +1,7 @@
 using BookingApp.Data;
 using BookingApp.Models;
+using BookingApp.Repositories;
+using BookingApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+
+builder.Services.AddScoped<IPatientProfileRepository, PatientProfileRepository>();
+builder.Services.AddScoped<IPatientProfileService, PatientProfileService>();
+
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
@@ -33,6 +40,16 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+    await DbSeeder.SeedRolesAsync(roleManager);
+}
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -46,6 +63,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
