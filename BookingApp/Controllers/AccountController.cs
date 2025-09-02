@@ -1,4 +1,5 @@
 ﻿using BookingApp.Models;
+using BookingApp.Services;
 using BookingApp.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,14 @@ namespace BookingApp.Controllers
     {
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
+        private readonly IPatientProfileService _patientProfileService;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, IPatientProfileService patientProfileService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this._patientProfileService = patientProfileService;
+
         }
 
         public IActionResult Login()
@@ -63,7 +67,9 @@ namespace BookingApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Login", "Account");
+                    await userManager.AddToRoleAsync(user, "PATIENT");
+                    // Redirect to CompleteProfile page, passing user ID or email
+                    return RedirectToAction("CompleteProfile", "Account", new { userId = user.Id });
                 }
                 else
                 {
@@ -154,6 +160,28 @@ namespace BookingApp.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult CompleteProfile(string userId)
+        {
+            var model = new PatientProfileVM { UserId = userId };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompleteProfile(PatientProfileVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var success = await _patientProfileService.CreatePatientProfile(model);
+                if (success)
+                {
+                    // Redirect to home or profile page
+                    return RedirectToAction("Login", "Account");
+                }
+                ModelState.AddModelError("", "Could not save profile.");
+            }
+            return View(model);
         }
     }
 }
