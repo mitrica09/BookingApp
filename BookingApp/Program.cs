@@ -1,7 +1,7 @@
 using BookingApp.Data;
 using BookingApp.Models;
-using BookingApp.Repositories;
-using BookingApp.Services;
+using BookingApp.Repositories.PatientProfile;
+using BookingApp.Services.PatientProfile;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

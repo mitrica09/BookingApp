@@ -1,5 +1,5 @@
 ﻿using BookingApp.Models;
-using BookingApp.Services;
+using BookingApp.Services.PatientProfile;
 using BookingApp.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
