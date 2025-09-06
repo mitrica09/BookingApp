@@ -1,8 +1,8 @@
 ﻿using BookingApp.ViewModels.Account;
 
-namespace BookingApp.Services
+namespace BookingApp.Repositories.PatientProfile
 {
-    public interface IPatientProfileService
+    public interface IPatientProfileRepository
     {
         Task<bool> CreatePatientProfile(PatientProfileVM patientProfile);
     }

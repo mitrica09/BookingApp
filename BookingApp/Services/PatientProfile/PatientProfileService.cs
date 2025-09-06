@@ -1,8 +1,8 @@
-﻿using BookingApp.Repositories;
+﻿using BookingApp.Repositories.PatientProfile;
 using BookingApp.ViewModels.Account;
 using System.Security.AccessControl;
 
-namespace BookingApp.Services
+namespace BookingApp.Services.PatientProfile
 {
     public class PatientProfileService : IPatientProfileService
     {

@@ -4,7 +4,7 @@ using BookingApp.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration.UserSecrets;
 
-namespace BookingApp.Repositories
+namespace BookingApp.Repositories.PatientProfile
 {
     public class PatientProfileRepository : IPatientProfileRepository
     {
@@ -23,11 +23,11 @@ namespace BookingApp.Repositories
             {
                 try
                 {
-                    var patientProfileEntity = new PatientProfile
+                    var patientProfileEntity = new Models.PatientProfile
                     {
                         UserId = patientProfile.UserId,
                         CNP = patientProfile.CNP,
-                        Gender = (PatientProfile.GenderStatus)patientProfile.Gender,
+                        Gender = (Models.PatientProfile.GenderStatus)patientProfile.Gender,
                         DateOfBirth = patientProfile.DateOfBirth.Value.Date,
                         Allergies = patientProfile.Allergies,
                         Notes = patientProfile.Notes
